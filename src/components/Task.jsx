@@ -3,8 +3,7 @@ import TasksMenu from "./TasksMenu";
 import { useState } from "react";
 import EditTask from "./EditTask";
 
-const Task = ({ task, deleteTask, editTask, changeCheckbox }) => {
-  const [isChecked, setIsChecked] = useState(false);
+const Task = ({ task, deleteTask, editTask, toggleComplete }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
@@ -27,8 +26,8 @@ const Task = ({ task, deleteTask, editTask, changeCheckbox }) => {
       <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
         <Checkbox
           mr={2}
-          value={isChecked}
-          onChange={(e) => setIsChecked(e.currentTarget.checked)}
+          checked={task.completed}
+          onChange={(e) => toggleComplete(task.id)}
         ></Checkbox>
         { isEditing === task.id ? (
           <EditTask task={task} setIsEditing={setIsEditing} editTask={editTask}/>

@@ -7,16 +7,18 @@ import AddTask from "./components/AddTask";
 const App = () => {
   const [tasks, setTasks] = useState( 
     JSON.parse(localStorage.getItem("tasks")) ||
-     [ 
-    //   {
-    //   id: 1,
-    //   text: 'Doctor Appointment'
-    //  },
-    //  {
-    //   id: 2,
-    //   text: 'Go Shopping'
-    //  }
-    ] );
+     [
+      {
+        id:1,
+        text: 'Go Swim',
+        completed: false,
+      },
+      {
+        id:2,
+        text: 'Go Get IT',
+        completed: false,
+      },
+     ]);
 
     useEffect(() => {
       localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -26,9 +28,10 @@ const App = () => {
   const addTask = (task) => {
     const id = tasks.length + 1;
 
-    const newTask = { id, ...task }
+    const newTask = { id, ...task, completed:false }
     setTasks([...tasks, newTask])
   }
+
 
   // Delete Task
   const deleteTask = (id) => {  
@@ -47,17 +50,9 @@ const App = () => {
     setEditingTask(false);
   }
   
-  //Checked Task
-  const changeCheckbox = (id, isChecked) => {
-    const changedCheckbox = tasks.map((task) => {
-      if (task.id === id) {
-        task.isChecked = isChecked;
-      }
-      return task;
-    });
-    console.log(changedCheckbox);
-    setTasks(changedCheckbox);
-  };
+  // Complete Task
+  const toggleComplete = (id) => {
+    setTasks(tasks.map((task) => task.id === id && {...task, completed: !task.completed}))
 
   return (
     <Box
@@ -77,7 +72,7 @@ const App = () => {
           tasks={tasks}
           deleteTask={deleteTask}
           editTask={editTask}
-          changeCheckbox={changeCheckbox}
+          toggleComplete={toggleComplete}
         />
       ) : (
         "No Tasks for today"
@@ -85,5 +80,6 @@ const App = () => {
     </Box>
   );
 };
+}
 
 export default App;
